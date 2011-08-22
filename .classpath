@@ -16,7 +16,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/mpxj.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ojdbc14.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/poi.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/prefuse.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/prefuse.jar" sourcepath="src/prefuse.zip"/>
 	<classpathentry exported="true" kind="lib" path="lib/log4j.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
