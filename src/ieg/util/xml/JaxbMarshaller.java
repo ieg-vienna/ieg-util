@@ -1,4 +1,4 @@
-package visuexplore.persistence;
+package ieg.util.xml;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -17,6 +17,8 @@ import javax.xml.bind.Unmarshaller;
 
 /**
  * Xml serializer with <a href="https://jaxb.dev.java.net">jaxb</a>
+ * 
+ * @author Alex Rind, Thomas Turic 
  */
 public class JaxbMarshaller {
 
@@ -27,8 +29,8 @@ public class JaxbMarshaller {
 	 * @param clazz
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	public static Object load(String xmlFile, Class clazz) {
+	@SuppressWarnings("rawtypes")
+    public static Object load(String xmlFile, Class clazz) {
 		Object model = null;
 		try {
 			model = loadUser(xmlFile, clazz);
@@ -51,7 +53,7 @@ public class JaxbMarshaller {
 	 * @throws IOException
 	 * @throws JAXBException
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public static Object loadUser(String xmlFile, Class clazz)
 			throws IOException, JAXBException {
 		Reader reader;
