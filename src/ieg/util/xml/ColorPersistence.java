@@ -86,7 +86,7 @@ public class ColorPersistence {
      * 
      * @author Alex Rind
      */
-    static class StringAdapter extends XmlAdapter<String, Color> {
+    public static class StringAdapter extends XmlAdapter<String, Color> {
 
         private String hex(int v) {
             if (v > 0xF)
@@ -112,7 +112,7 @@ public class ColorPersistence {
      * 
      * @author Alex Rind
      */
-    static class IntegerStringAdapter extends XmlAdapter<String, Integer> {
+    public static class IntegerStringAdapter extends XmlAdapter<String, Integer> {
 
         @Override
         public String marshal(Integer v) throws Exception {
@@ -123,7 +123,7 @@ public class ColorPersistence {
 
         @Override
         public Integer unmarshal(String v) throws Exception {
-            return Integer.valueOf(v, 16);
+            return Integer.valueOf(v.substring(1), 16) | 0xFF000000;
         }
     }
 }
