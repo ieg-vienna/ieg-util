@@ -30,7 +30,7 @@ public class JaxbMarshaller {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-    public static Object load(String xmlFile, Class clazz) {
+    public static Object load(String xmlFile, Class... clazz) {
 		Object model = null;
 		try {
 			model = loadUser(xmlFile, clazz);
@@ -54,7 +54,7 @@ public class JaxbMarshaller {
 	 * @throws JAXBException
 	 */
 	@SuppressWarnings("rawtypes")
-	public static Object loadUser(String xmlFile, Class clazz)
+	public static Object loadUser(String xmlFile, Class... clazz)
 			throws IOException, JAXBException {
 		Reader reader;
 		Object model = null;

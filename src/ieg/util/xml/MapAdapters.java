@@ -6,14 +6,28 @@ import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 /**
- * generic mapping of a HashMap for JAXB (experimental)
+ * generic mapping of a HashMap for JAXB (experimental).
+ * <p>
+ * <b>Disclaimer:</b> This is as general as I managed to write this class, however:
+ * <li>
+ * It will probably not work with keys or values 
+ * that are supported by JAXB out of the box (e.g., {@link java.awt.Color}).
+ * <li> 
+ * Generated XML declares xs and xsi namespaces multiple times, 
+ * though it is enough to declare them once in the root element.     
+ * <p>
+ * A workaround is to use this class as a template for an adapter 
+ * and a marshalled form without generics (e.g., 
+ * {@link visuexplore.persistence.CategoricalPaletteXmlAdapter})
  * 
  * @author Alex Rind
  * 
- * @param <K>
- * @param <V>
+ * @param <K> key 
+ * @param <V> value
  */
 public class MapAdapters {
+    
+    /* insert subclasses if needed */
 
     public static class StringStringLinkedHashMapXmlAdapter extends
             LinkedHashMapXmlAdapter<String, String> {

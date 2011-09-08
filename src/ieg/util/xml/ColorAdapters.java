@@ -21,7 +21,7 @@ import prefuse.util.ColorLib;
  * 
  * @author Alex Rind
  * */
-public class ColorPersistence {
+public class ColorAdapters {
 
     /**
      * color model that can be serialized with JAXB.
@@ -116,6 +116,11 @@ public class ColorPersistence {
 
         @Override
         public String marshal(Integer v) throws Exception {
+            // (1) filter all bytes that do not encode red, green, blue
+            // (2) add a bit in front to ensure all leading zeros are created
+            // (3) convert to hex string 
+            // (4) remove leading 1
+            // (5) add a leading "#"
             return "#"
                     + Integer.toString((v & 0xFFFFFF) | 0x1000000, 16)
                             .substring(1);
@@ -123,6 +128,9 @@ public class ColorPersistence {
 
         @Override
         public Integer unmarshal(String v) throws Exception {
+            // (1) remove leading "#"
+            // (2) convert from hex string
+            // (3) add alpha value of 255 (full opacity)
             return Integer.valueOf(v.substring(1), 16) | 0xFF000000;
         }
     }
