@@ -82,11 +82,24 @@ public class JaxbMarshaller {
 	 * @param xmlFile
 	 * @param obj
 	 */
-	public static void save(String xmlFile, Object o) {
+    public static void save(String xmlFile, Object o) {
+        save(xmlFile, o, o.getClass());
+    }
+    
+    /**
+     * serializes an object and writes it to an XML file. The XML file is always
+     * in UTF-8.
+     * 
+     * @param xmlFile
+     * @param obj
+     * @param clazz
+     */
+	@SuppressWarnings("rawtypes")
+    public static void save(String xmlFile, Object o, Class... clazz) {
 		try {
 			Writer writer = new BufferedWriter(new OutputStreamWriter(
 					new FileOutputStream(xmlFile), "UTF-8"));
-			JAXBContext context = JAXBContext.newInstance(o.getClass());
+			JAXBContext context = JAXBContext.newInstance(clazz);
 			Marshaller m = context.createMarshaller();
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 			m.marshal(o, writer);
