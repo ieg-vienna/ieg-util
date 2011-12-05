@@ -93,7 +93,8 @@ public class TextTableFormat {
         } else {
             // skipped parsers: DateParser, TimeParser, DateTimeParser
             final DataParser[] nonTemporalParsers = new DataParser[] {
-                    new IntParser(), new LongParser(), new DoubleParser(),
+                    //new IntParser(), new LongParser(), 
+                    new DoubleParser(),
                     new FloatParser(), new BooleanParser(),
                     new ColorIntParser(), new IntArrayParser(),
                     new LongArrayParser(), new FloatArrayParser(),
