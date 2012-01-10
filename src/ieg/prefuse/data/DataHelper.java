@@ -10,6 +10,7 @@ import prefuse.data.Node;
 import prefuse.data.Schema;
 import prefuse.data.Table;
 import prefuse.data.Tuple;
+import prefuse.data.expression.Predicate;
 import prefuse.data.tuple.TupleSet;
 import prefuse.util.collections.IntIterator;
 
@@ -22,7 +23,7 @@ public class DataHelper {
      * @return the created graph
      * */
     public static Graph buildGraph(Table table) {
-        return buildGraph(table, null, null);
+        return buildGraph(table, null, null, null);
     }
 
     /**
@@ -31,9 +32,10 @@ public class DataHelper {
      * @param table the table from which to build a graph
      * @param groupField the field to group tuples
      * @param sortField the field to sort tuples
+     * @param missingValue 
      * @return the created graph
      * */
-    public static Graph buildGraph(Table table, String groupField, String sortField) {
+    public static Graph buildGraph(Table table, String groupField, String sortField, Predicate missingValue) {
         // create a graph with node schema like input table schema
         Schema schema = table.getSchema();
         Graph graph = new Graph(schema.instantiate(), true);
@@ -50,8 +52,14 @@ public class DataHelper {
         
         while (rows.hasNext()) {
             Tuple t = (Tuple) table.getTuple(rows.nextInt());
-            
             String code = groupField != null ? t.getString(groupField) : "default";
+            
+            if (missingValue != null && missingValue.getBoolean(t)) {
+                // skip this tuple and interrupt the graph
+                prevTupleMap.remove(code);
+                continue;
+            }
+            
 
             // create a new graph node and fill it with input values
             Node cur = graph.addNode();
