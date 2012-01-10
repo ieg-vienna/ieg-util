@@ -2,13 +2,77 @@ package ieg.prefuse.data;
 
 import java.io.PrintStream;
 import java.util.Iterator;
+import java.util.TreeMap;
 
+import prefuse.data.Edge;
+import prefuse.data.Graph;
+import prefuse.data.Node;
+import prefuse.data.Schema;
 import prefuse.data.Table;
 import prefuse.data.Tuple;
 import prefuse.data.tuple.TupleSet;
+import prefuse.util.collections.IntIterator;
 
 public class DataHelper {
-    
+
+    /**
+     * build a graph from a table.  
+     * 
+     * @param table the table from which to build a graph
+     * @return the created graph
+     * */
+    public static Graph buildGraph(Table table) {
+        return buildGraph(table, null, null);
+    }
+
+    /**
+     * build a graph from a table.  
+     * 
+     * @param table the table from which to build a graph
+     * @param groupField the field to group tuples
+     * @param sortField the field to sort tuples
+     * @return the created graph
+     * */
+    public static Graph buildGraph(Table table, String groupField, String sortField) {
+        // create a graph with node schema like input table schema
+        Schema schema = table.getSchema();
+        Graph graph = new Graph(schema.instantiate(), true);
+        if (groupField != null)
+            graph.getEdgeTable().addColumn(groupField, String.class);
+
+        // remember previous node for each time series
+        TreeMap<String, Node> prevTupleMap = new TreeMap<String, Node>();
+
+//      for (int i = 0; i < table.getTupleCount(); i++) {
+//      Tuple t = (Tuple) table.getTuple(i);
+
+        IntIterator rows = sortField!= null ? table.rowsSortedBy(sortField, true) : table.rows();
+        
+        while (rows.hasNext()) {
+            Tuple t = (Tuple) table.getTuple(rows.nextInt());
+            
+            String code = groupField != null ? t.getString(groupField) : "default";
+
+            // create a new graph node and fill it with input values
+            Node cur = graph.addNode();
+            for (int col = 0; col < t.getColumnCount(); col++) {
+                cur.set(col, t.get(col));
+            }
+
+            // connect if possible
+            if (prevTupleMap.containsKey(code)) {
+                Edge edge = graph.addEdge(prevTupleMap.get(code), cur);
+                if (groupField != null)
+                    edge.set(groupField, code);
+            }
+
+            // remember node for connection
+            prevTupleMap.put(code, cur);
+        }
+
+        return graph;
+    }
+
     /**
      * build a debug string on meta data of a table column
      * @param t the table to debug
