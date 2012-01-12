@@ -5,8 +5,6 @@ import java.awt.Color;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
-import prefuse.util.ColorLib;
-
 /**
  * Four adapters to serialize colors with JAXB.
  * 
@@ -31,6 +29,8 @@ public class ColorAdapters {
     static class ColorModel {
         @XmlAttribute(required = true)
         int red, green, blue;
+        @XmlAttribute(required = false)
+        int alpha = 255;
     }
 
     /**
@@ -44,6 +44,7 @@ public class ColorAdapters {
         @Override
         public ColorModel marshal(Color v) throws Exception {
             ColorModel m = new ColorModel();
+            m.alpha = v.getAlpha();
             m.red = v.getRed();
             m.green = v.getGreen();
             m.blue = v.getBlue();
@@ -52,7 +53,7 @@ public class ColorAdapters {
 
         @Override
         public Color unmarshal(ColorModel v) throws Exception {
-            return new Color(v.red, v.green, v.blue);
+            return new Color(v.red, v.green, v.blue, v.alpha);
         }
     }
 
@@ -68,15 +69,18 @@ public class ColorAdapters {
         @Override
         public ColorModel marshal(Integer v) throws Exception {
             ColorModel m = new ColorModel();
-            m.red = ColorLib.red(v.intValue());
-            m.green = ColorLib.green(v.intValue());
-            m.blue = ColorLib.blue(v.intValue());
+            m.alpha = (v >> 24) & 0xFF;
+            m.red = (v >> 16) & 0xFF;
+            m.green = (v >> 8) & 0xFF;
+            m.blue = v & 0xFF;
             return m;
         }
 
         @Override
         public Integer unmarshal(ColorModel v) throws Exception {
-            return new Integer(ColorLib.rgb(v.red, v.green, v.blue));
+            return new Integer(((v.alpha & 0xFF) << 24)
+                    | ((v.red & 0xFF) << 16) | ((v.green & 0xFF) << 8)
+                    | ((v.blue & 0xFF) << 0));
         }
     }
 
