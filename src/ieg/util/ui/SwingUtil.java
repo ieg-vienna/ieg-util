@@ -1,9 +1,12 @@
 package ieg.util.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.LayoutManager;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseListener;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -180,4 +183,21 @@ public abstract class SwingUtil {
 				cancelAction);
 	}
 
+    /**
+     * adds the mouse listener to the component and all its children. This is
+     * useful when you want to catch events on the ends of a scroll bar.
+     * 
+     * @param comp
+     *            a GUI component (e.g., a scroll bar)
+     * @param listener
+     *            a mouse listener
+     */
+    public static void registerWithAllChildren(Component comp,
+            MouseListener listener) {
+        comp.addMouseListener(listener);
+
+        if (comp instanceof Container)
+            for (Component child : ((Container) comp).getComponents())
+                registerWithAllChildren(child, listener);
+    }
 }
