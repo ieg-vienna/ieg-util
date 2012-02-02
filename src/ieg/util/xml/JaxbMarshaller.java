@@ -5,10 +5,12 @@ import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.URL;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -56,19 +58,24 @@ public class JaxbMarshaller {
 	@SuppressWarnings("rawtypes")
 	public static Object loadUser(String xmlFile, Class... clazz)
 			throws IOException, JAXBException {
-		Reader reader;
-		Object model = null;
-		reader = new BufferedReader(new InputStreamReader(new FileInputStream(
-				xmlFile), "UTF-8"));
+	    return loadUser(new FileInputStream(xmlFile), clazz);
+	}
+		
+    @SuppressWarnings("rawtypes")
+    public static Object loadUser(URL xmlFile, Class... clazz)
+            throws IOException, JAXBException {
+        return loadUser(xmlFile.openStream(), clazz);
+    }
+        
+	@SuppressWarnings("rawtypes")
+	public static Object loadUser(InputStream xmlFile, Class... clazz) 
+            throws IOException, JAXBException {
+	    Reader reader = new BufferedReader(new InputStreamReader(xmlFile, "UTF-8"));
 
-		JAXBContext context;
-
-		context = JAXBContext.newInstance(clazz);
-
-		Unmarshaller m;
-
-		m = context.createUnmarshaller();
-		model = m.unmarshal(reader);
+		JAXBContext context = JAXBContext.newInstance(clazz);
+		Unmarshaller m = context.createUnmarshaller();
+		
+		Object model = m.unmarshal(reader);
 
 		reader.close();
 
