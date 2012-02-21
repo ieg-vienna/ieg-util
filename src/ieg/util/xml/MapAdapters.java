@@ -27,8 +27,10 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
  */
 public class MapAdapters {
     
-    /* insert subclasses if needed */
-
+    /*
+     * insert subclasses if needed; the subclasses are not actually necessary --
+     * JaxbDemo moreData also works with the generic class
+     */
     public static class StringStringLinkedHashMapXmlAdapter extends
             LinkedHashMapXmlAdapter<String, String> {
     }
