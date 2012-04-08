@@ -70,16 +70,20 @@ public class JaxbMarshaller {
 	@SuppressWarnings("rawtypes")
 	public static Object loadUser(InputStream xmlFile, Class... clazz) 
             throws IOException, JAXBException {
-	    Reader reader = new BufferedReader(new InputStreamReader(xmlFile, "UTF-8"));
+        Reader reader = new BufferedReader(new InputStreamReader(xmlFile,
+                "UTF-8"));
 
-		JAXBContext context = JAXBContext.newInstance(clazz);
-		Unmarshaller m = context.createUnmarshaller();
-		
-		Object model = m.unmarshal(reader);
+        try {
+            JAXBContext context = JAXBContext.newInstance(clazz);
+            Unmarshaller m = context.createUnmarshaller();
 
-		reader.close();
+            Object model = m.unmarshal(reader);
 
-		return model;
+            return model;
+            
+        } finally {
+            reader.close();
+        }
 	}
 
 	/**
