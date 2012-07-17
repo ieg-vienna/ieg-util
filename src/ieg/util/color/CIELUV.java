@@ -12,23 +12,27 @@ package ieg.util.color;
  *
  */
 public class CIELUV {
-	public static float getMaxChroma() {
-		return getMaxChroma(2.4f);
-	}
-	public static float getMaxChroma(float gamma) {
-		return 512f/3f*(float)Math.exp(gamma/100f);
+	public static double getMinLuminanceForChroma(double chroma,double gamma) {
+		
+		return 0.75*chroma;
 	}
 	
-	public static float getMaxChromaForLuminance(float luminance) {
-		return getMaxChromaForLuminance(luminance,2.4f);
-	}
-	public static float getMaxChromaForLuminance(float luminance,float gamma) {
-		float chroma = 4f/3f*luminance;
+	public static double getMaxLuminanceForChroma(double chroma,double gamma) {
 		
-		if(3f*chroma/2f>255) {
+		double oldTry = Double.MAX_VALUE; 
+		for(double min = 0; min<256; min++) {
+			double q = Math.exp(min*gamma/255.0);
+			double triedChroma = 170.0 * q - 2.0/3.0*min*q;
+			double newTry = Math.abs(triedChroma-chroma);
 			
+			if(oldTry < newTry) {
+				return (q*255.0+(q-1.0)*min)/2.0;
+			}
+			
+			oldTry = newTry;
 		}
 		
-		return chroma;
+		return Math.exp(gamma)*255.0-127.5;
 	}
+
 }
