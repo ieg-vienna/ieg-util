@@ -11,7 +11,7 @@ package ieg.util.color;
  * @author Tim Lammarsch
  *
  */
-public class CIELUV {
+public class HCL {
 	public static double getMinLuminanceForChroma(double chroma,double gamma) {
 		
 		return 0.75*chroma;
