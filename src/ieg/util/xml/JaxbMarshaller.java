@@ -15,7 +15,10 @@ import java.net.URL;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.Result;
+import javax.xml.transform.stream.StreamResult;
 
 /**
  * Xml serializer with <a href="https://jaxb.dev.java.net">jaxb</a>
@@ -122,4 +125,24 @@ public class JaxbMarshaller {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * generate a XML Schema file for a hierarchy if JAXB annotated classes. 
+	 * @param xsdFile path of the output file
+	 * @param classes annotated classes, typically the root class is sufficient  
+	 * @throws JAXBException
+	 * @throws IOException
+	 */
+	@SuppressWarnings("rawtypes")
+    public static void generateSchema(final String xsdFile, Class... classes) throws JAXBException, IOException {
+        class MySchemaOutputResolver extends SchemaOutputResolver {
+            public Result createOutput(String namespaceUri,
+                    String suggestedFileName) throws IOException {
+                return new StreamResult(xsdFile);
+            }
+        }
+
+        JAXBContext context = JAXBContext.newInstance(classes);
+        context.generateSchema(new MySchemaOutputResolver());
+    }
 }
