@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: common
-Bundle-SymbolicName: common
-Bundle-Version: 1.0.0.qualifier
+Bundle-Name: ieg-util
+Bundle-SymbolicName: ieg-util
+Bundle-Version: 1.0.0.unstable
 Bundle-Vendor: ieg, Vienna University of Technology
-Bundle-ClassPath: common.jar
+Bundle-ClassPath: ieg-util.jar
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
