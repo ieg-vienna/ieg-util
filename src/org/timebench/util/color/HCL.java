@@ -1,4 +1,4 @@
-package ieg.util.color;
+package org.timebench.util.color;
 
 /**
  * 

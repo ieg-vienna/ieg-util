@@ -1,4 +1,4 @@
-package ieg.util.xml;
+package org.timebench.util.xml;
 
 import java.util.Date;
 import java.util.GregorianCalendar;

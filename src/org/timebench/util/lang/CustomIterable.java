@@ -1,4 +1,4 @@
-package ieg.util.lang;
+package org.timebench.util.lang;
 
 import java.util.Iterator;
 

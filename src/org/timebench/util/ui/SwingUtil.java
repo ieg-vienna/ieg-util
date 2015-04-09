@@ -1,4 +1,4 @@
-package ieg.util.ui;
+package org.timebench.util.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;

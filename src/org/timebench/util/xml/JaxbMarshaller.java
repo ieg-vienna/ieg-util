@@ -1,4 +1,4 @@
-package ieg.util.xml;
+package org.timebench.util.xml;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
