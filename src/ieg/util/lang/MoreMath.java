@@ -2,6 +2,10 @@ package ieg.util.lang;
 
 import java.util.Random;
 
+/**
+ * some additional mathematical utilities.
+ * @author Alexander Rind
+ */
 public class MoreMath {
 
 	/**
@@ -29,6 +33,22 @@ public class MoreMath {
 			result[i] = temp;
 		}
 		return result;
+	}
+
+	/**
+	 * create a random alpha-numerical string, which is suitable as pseudo-unique id
+	 * @param chars length of output
+	 * @return a random alpha-numerical string
+	 */
+	public static String getRandomAlphaNum(int chars) {
+	    // 4 digit number in base36 (alphanumerical)
+	    // 46656 = 1000x36 = 36^3
+	    // 1632960 = Z000x36 = 36^4 - 36^3 
+	    final int base = 36;
+	    int low = (int) Math.round(Math.pow(base, chars - 1));
+	    int extent = low * (base - 1);
+	    int code = (int) (Math.random() * extent) + low;
+	    return Integer.toString(code, base);
 	}
 
 }
